@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#edf2ef">
+    <title>Everyday Calculator</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <main class="calculator-shell">
+      <header class="topline">
+        <a class="wordmark" href="/" aria-label="Everyday Calculator home">/ calc</a>
+        <span class="service-state" id="service-state"><span class="state-dot"></span> Checking services</span>
+      </header>
+
+      <section class="calculator" aria-labelledby="page-title">
+        <div class="calculator-heading">
+          <div>
+            <p class="eyebrow">POCKET SERIES / 01</p>
+            <h1 id="page-title">Calculator</h1>
+          </div>
+        </div>
+
+        <section class="screen" id="screen" aria-label="Calculator display" aria-live="polite">
+          <p class="expression" id="expression">Ready</p>
+          <output class="display-value" id="display-value" aria-label="Display value">0</output>
+          <p class="screen-message" id="screen-message">Python worker connected</p>
+          <span class="screen-state" id="screen-state">READY</span>
+        </section>
+
+        <div class="keypad" role="group" aria-label="Calculator keypad">
+          <button class="key key-utility" type="button" data-action="clear" aria-label="Clear all">AC</button>
+          <button class="key key-utility" type="button" data-action="delete" aria-label="Delete last digit">DEL</button>
+          <button class="key key-operation" type="button" data-operation="modulo" aria-label="Modulo">%</button>
+          <button class="key key-operation" type="button" data-operation="divide" aria-label="Divide">÷</button>
+
+          <button class="key" type="button" data-digit="7">7</button>
+          <button class="key" type="button" data-digit="8">8</button>
+          <button class="key" type="button" data-digit="9">9</button>
+          <button class="key key-operation" type="button" data-operation="multiply" aria-label="Multiply">×</button>
+
+          <button class="key" type="button" data-digit="4">4</button>
+          <button class="key" type="button" data-digit="5">5</button>
+          <button class="key" type="button" data-digit="6">6</button>
+          <button class="key key-operation" type="button" data-operation="subtract" aria-label="Subtract">−</button>
+
+          <button class="key" type="button" data-digit="1">1</button>
+          <button class="key" type="button" data-digit="2">2</button>
+          <button class="key" type="button" data-digit="3">3</button>
+          <button class="key key-operation" type="button" data-operation="add" aria-label="Add">+</button>
+
+          <button class="key key-utility" type="button" data-action="sign" aria-label="Change sign">±</button>
+          <button class="key key-operation" type="button" data-operation="power" aria-label="Raise to a power">xʸ</button>
+          <button class="key key-operation" type="button" data-operation="square_root" aria-label="Square root">√</button>
+          <button class="key" type="button" data-action="decimal" aria-label="Decimal point">.</button>
+
+          <button class="key key-zero" type="button" data-digit="0">0</button>
+          <button class="key key-equals" type="button" data-action="equals" aria-label="Equals">=</button>
+        </div>
+      </section>
+
+      <footer><span>NODE GATEWAY / 3000</span><span class="footer-rule"></span><span>PYTHON WORKER / 5001</span></footer>
+    </main>
+  </body>
+</html>

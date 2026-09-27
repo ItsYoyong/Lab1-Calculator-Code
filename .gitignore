@@ -1,0 +1,5 @@
+nodejs-service/node_modules/
+nodejs-service/history.csv
+python-service/__pycache__/
+python-service/.venv/
+.venv/

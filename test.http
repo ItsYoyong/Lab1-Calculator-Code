@@ -1,0 +1,88 @@
+@baseUrl = http://localhost:3000
+
+###
+GET {{baseUrl}}/api/status
+Accept: application/json
+
+###
+GET {{baseUrl}}/hello
+Accept: application/json
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 12,
+  "num2": 5,
+  "operation": "add"
+}
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 12,
+  "num2": 5,
+  "operation": "subtract"
+}
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 12,
+  "num2": 5,
+  "operation": "multiply"
+}
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 12,
+  "num2": 5,
+  "operation": "divide"
+}
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 12,
+  "num2": 5,
+  "operation": "modulo"
+}
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 2,
+  "num2": 5,
+  "operation": "power"
+}
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 81,
+  "operation": "square_root"
+}
+
+###
+POST {{baseUrl}}/api/calculate
+Content-Type: application/json
+
+{
+  "num1": 12,
+  "num2": 0,
+  "operation": "divide"
+}
