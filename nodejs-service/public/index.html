@@ -59,6 +59,15 @@
           <button class="key key-zero" type="button" data-digit="0">0</button>
           <button class="key key-equals" type="button" data-action="equals" aria-label="Equals">=</button>
         </div>
+
+        <section class="history" aria-labelledby="history-title">
+          <div class="history-heading">
+            <h2 id="history-title">History</h2>
+            <span class="history-count" id="history-count">0 entries</span>
+          </div>
+          <p class="history-empty" id="history-empty">No calculations yet</p>
+          <ol class="history-list" id="history-list" aria-live="polite"></ol>
+        </section>
       </section>
 
       <footer><span>NODE GATEWAY / 3000</span><span class="footer-rule"></span><span>PYTHON WORKER / 5001</span></footer>

@@ -7,6 +7,9 @@ const screenMessage = document.querySelector('#screen-message');
 const screenState = document.querySelector('#screen-state');
 const serviceState = document.querySelector('#service-state');
 const keys = document.querySelectorAll('.key');
+const historyList = document.querySelector('#history-list');
+const historyEmpty = document.querySelector('#history-empty');
+const historyCount = document.querySelector('#history-count');
 
 const operationSymbols = {
   add: '+',
@@ -21,6 +24,16 @@ let currentValue = '0';
 let firstOperand = null;
 let activeOperation = null;
 let replaceOnDigit = false;
+
+const operationLabels = {
+  add: '+',
+  subtract: '−',
+  multiply: '×',
+  divide: '÷',
+  modulo: '%',
+  power: '^',
+  square_root: '√',
+};
 
 function renderDisplay() {
   displayValue.textContent = currentValue;
@@ -108,6 +121,7 @@ async function requestCalculation(payload, formula) {
     screenMessage.textContent = result.message || 'Calculation completed';
     setScreenState('DONE');
     renderDisplay();
+    loadHistory();
     return true;
   } catch (error) {
     expression.textContent = `${formula} =`;
@@ -116,6 +130,38 @@ async function requestCalculation(payload, formula) {
     return false;
   } finally {
     keys.forEach((key) => { key.disabled = false; });
+  }
+}
+
+function renderHistory(history) {
+  historyList.replaceChildren();
+  historyCount.textContent = `${history.length} ${history.length === 1 ? 'entry' : 'entries'}`;
+  historyEmpty.hidden = history.length > 0;
+
+  history.forEach((item) => {
+    const row = document.createElement('li');
+    const formula = item.operation === 'square_root'
+      ? `√(${item.num1})`
+      : `${item.num1} ${operationLabels[item.operation] || item.operation} ${item.num2}`;
+    row.dataset.status = item.status;
+    row.innerHTML = `<span class="history-formula"></span><span class="history-result"></span>`;
+    row.querySelector('.history-formula').textContent = formula;
+    row.querySelector('.history-result').textContent = item.status === 'success' ? `= ${item.result}` : 'Error';
+    historyList.append(row);
+  });
+}
+
+async function loadHistory() {
+  try {
+    const response = await fetch('/api/history');
+    if (!response.ok) throw new Error('History unavailable');
+    const data = await response.json();
+    renderHistory(data.history);
+  } catch (error) {
+    historyList.replaceChildren();
+    historyCount.textContent = 'Unavailable';
+    historyEmpty.hidden = false;
+    historyEmpty.textContent = 'History could not be loaded';
   }
 }
 
@@ -210,3 +256,4 @@ fetch('/api/status')
   });
 
 renderDisplay();
+loadHistory();

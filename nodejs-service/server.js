@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const path = require('node:path');
-const { open, appendFile } = require('node:fs/promises');
+const { open, appendFile, readFile } = require('node:fs/promises');
 
 const app = express();
 const port = Number(process.env.PORT) || 3000;
@@ -32,6 +32,32 @@ async function ensureHistoryFile() {
 
 function csvCell(value) {
   return `"${String(value ?? '').replaceAll('"', '""')}"`;
+}
+
+function parseCsvLine(line) {
+  const cells = [];
+  let cell = '';
+  let quoted = false;
+
+  for (let index = 0; index < line.length; index += 1) {
+    const character = line[index];
+    const nextCharacter = line[index + 1];
+
+    if (character === '"' && quoted && nextCharacter === '"') {
+      cell += '"';
+      index += 1;
+    } else if (character === '"') {
+      quoted = !quoted;
+    } else if (character === ',' && !quoted) {
+      cells.push(cell);
+      cell = '';
+    } else {
+      cell += character;
+    }
+  }
+
+  cells.push(cell);
+  return cells;
 }
 
 async function appendCalculation(payload, pythonResult) {
@@ -115,4 +141,23 @@ async function start() {
 start().catch((error) => {
   console.error('Failed to start API gateway:', error);
   process.exitCode = 1;
+});
+
+app.get('/api/history', async (req, res) => {
+  try {
+    await ensureHistoryFile();
+    const contents = await readFile(historyPath, 'utf8');
+    const lines = contents.trim().split('\n').slice(1).filter(Boolean);
+    const requestedLimit = Number.parseInt(req.query.limit, 10);
+    const limit = Number.isInteger(requestedLimit) ? Math.min(Math.max(requestedLimit, 1), 100) : 25;
+    const history = lines.slice(-limit).reverse().map((line) => {
+      const [timestamp, num1, num2, operation, result, status] = parseCsvLine(line);
+      return { timestamp, num1, num2, operation, result, status };
+    });
+
+    res.json({ history });
+  } catch (error) {
+    console.error('Failed to read calculation history:', error);
+    res.status(500).json({ message: 'Calculation history is unavailable' });
+  }
 });
